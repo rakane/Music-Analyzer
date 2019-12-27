@@ -1,0 +1,22 @@
+h1 {
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+  margin: 16px 64px;
+}
+
+h3 {
+  text-align: center;
+  margin: 24px;
+}
+
+#root-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 50vh;
+  width: 100vw;
+}

@@ -1,0 +1,22 @@
+doctype html
+head 
+    title BPM Finder
+    meta(charset='UTF-8') 
+    meta(name='viewport' content='width=device-width,initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible' content='ie=edge')
+    link(rel='stylesheet' href='/styles/index.css')
+h1 BPM Finder
+h2 Upload an mp3 file to get its BPM, or multiple to also generate a mix of the songs by BPM
+#root-container
+    .upload
+        h3 Upload Single Song
+        form(action='/upload-single' enctype='multipart/form-data' method='POST')
+            input(type='file' name='myFile') 
+            input(type='submit' value='Upload a file')
+    .upload
+        h3 Upload Multiple Songs
+        form(action='/upload-multiple' enctype='multipart/form-data' method='POST')
+            input(type='file' name='myFiles' multiple='') 
+            input(type='submit' value='Upload your files')
+
+script(src='/scripts/name.js')
