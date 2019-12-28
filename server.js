@@ -2,8 +2,6 @@
 // Packages
 const express = require('express');
 const cors = require('cors');
-const AudioContext = require('web-audio-api').AudioContext;
-const MusicTempo = require('music-tempo');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -15,6 +13,8 @@ const generateID = require('./helper/generateID');
 const replaceSpaces = require('./helper/replaceSpaces');
 const getSongs = require('./helper/getSongs');
 const analyzeSong = require('./analyzer/songAnalyzer');
+const compareTempo = require('./helper/compareTempo');
+const generateMix = require('./mix/generateMix');
 
 const app = express();
 
@@ -61,6 +61,10 @@ const storeFS = (stream, filename) => {
       .on('finish', () => resolve({ path }))
   );
 };
+
+function highest() {
+  return [].slice.call(arguments).sort(compareTempo);
+}
 
 app.get('/', (req, res) => {
   res.cookie('playlist_id', generateID());
@@ -113,7 +117,6 @@ app.post('/upload-single', (req, res) => {
 
 //Uploading multiple files
 app.post('/upload-multiple', upload.array('myFiles', 12), (req, res, next) => {
-  console.log(req.cookies.playlist_id);
   const files = req.files;
   if (!files) {
     const error = new Error('Please choose files');
@@ -126,13 +129,25 @@ app.post('/upload-multiple', upload.array('myFiles', 12), (req, res, next) => {
 
 app.get('/playlist/:id', async (req, res) => {
   getSongs(req.params.id, function(results) {
-    res.render('playlistBPM.pug', { results: results });
+    res.render('playlistBPM.pug', {
+      results: results,
+      resultString: JSON.stringify(results)
+    });
   });
 });
 
-app.get('/playlist/mix/:id', (req, res) => {
-  console.log(req.params.id);
-  console.log('Mixing...');
+app.post('/playlist/mix/:id', (req, res) => {
+  let playlistOrder = req.body.songs;
+  playlistOrder.sort(compareTempo);
+
+  let tracks = [];
+  for (let i = 0; i < playlistOrder.length; i++) {
+    tracks.push(playlistOrder[i].name);
+  }
+
+  console.log(tracks);
+
+  generateMix(tracks, req.params.id);
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
