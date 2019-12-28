@@ -1,7 +1,6 @@
 const ready = () => {
-  console.log('ready');
   let songs = tracks;
-  console.log(songs);
+
   document.getElementById('mix-btn').addEventListener('click', function(e) {
     e.preventDefault();
     let cookie = document.cookie.split('=');
@@ -11,7 +10,11 @@ const ready = () => {
       url: `/playlist/mix/${cookie[cookie.length - 1]}`,
       type: 'post',
       data: { songs: songs },
-      success: (data, status) => {}
+      success: (data, status) => {
+        if (data.status === 'finished') {
+          window.location = `/download/${cookie[cookie.length - 1]}`;
+        }
+      }
     });
   });
 };

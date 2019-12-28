@@ -9,12 +9,18 @@ const multer = require('multer');
 const { Readable } = require('stream');
 const cookieParser = require('cookie-parser');
 
+// Analyze Song
+const analyzeSong = require('./analyzer/songAnalyzer');
+
+// Generate Mix
+const generateMix = require('./mix/generateMix');
+
+// Helpers
 const generateID = require('./helper/generateID');
 const replaceSpaces = require('./helper/replaceSpaces');
 const getSongs = require('./helper/getSongs');
-const analyzeSong = require('./analyzer/songAnalyzer');
 const compareTempo = require('./helper/compareTempo');
-const generateMix = require('./mix/generateMix');
+const deletePlaylist = require('./helper/deletePlaylist');
 
 const app = express();
 
@@ -141,9 +147,18 @@ app.post('/playlist/mix/:id', (req, res) => {
     tracks.push(playlistOrder[i].name);
   }
 
-  console.log(tracks);
+  generateMix(tracks, req.params.id, res);
+});
 
-  generateMix(tracks, req.params.id);
+app.get('/download/:id', (req, res) => {
+  res.download(`uploads/${req.params.id}/outputFinal.mp3`, 'mix.mp3', err => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log('Downloaded!');
+      deletePlaylist(req.params.id);
+    }
+  });
 });
 
 app.use(express.static(path.join(__dirname, 'public')));

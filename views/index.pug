@@ -7,15 +7,17 @@ head
     link(rel='stylesheet' href='/styles/index.css')
 h1 BPM Finder
 h2 Upload an mp3 file to get its BPM, or multiple to also generate a mix of the songs by BPM
+#loader-container
+    h3 Loading, please wait for website to redirect you
 #root-container
     .upload
         h3 Upload Single Song
-        form(action='/upload-single' enctype='multipart/form-data' method='POST')
+        form(class="form" action='/upload-single' enctype='multipart/form-data' method='POST')
             input(type='file' name='myFile') 
             input(type='submit' value='Upload a file')
     .upload
         h3 Upload Multiple Songs
-        form(action='/upload-multiple' enctype='multipart/form-data' method='POST')
+        form(class="form" action='/upload-multiple' enctype='multipart/form-data' method='POST')
             input(type='file' name='myFiles' multiple='') 
             input(type='submit' value='Upload your files')
 

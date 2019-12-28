@@ -13,6 +13,16 @@ const ready = () => {
     form.appendChild(hiddenInput);
     form.submit();
   });
+
+  let forms = document.getElementsByClassName('form');
+  for (let i = 0; i < forms.length; i++) {
+    forms[i].addEventListener('submit', e => {
+      document.querySelector('h1').style.display = 'none';
+      document.querySelector('h1').style.display = 'none';
+      document.getElementById('root-container').style.display = 'none';
+      document.getElementById('loader-container').style.display = 'block';
+    });
+  }
 };
 
 if (document.readyState === 'loading') {

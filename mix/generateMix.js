@@ -8,7 +8,6 @@ const deleteTempFiles = playlistID => {
   const playlistDir = `uploads/${playlistID}`;
 
   fsExtra.remove(tempDir, err => {
-    console.error(err);
     if (err === null) {
       fs.readdir(playlistDir, (err, files) => {
         if (err) throw err;
@@ -38,7 +37,8 @@ const crossfade = (
   start2,
   outputFile,
   nextTrack,
-  finalDir
+  finalDir,
+  res
 ) => {
   if (nextTrack > tracks.length - 1) {
     outputFile = `uploads/${finalDir}/outputFinal.mp3`;
@@ -53,7 +53,7 @@ const crossfade = (
       {
         filter: 'acrossfade',
         options: {
-          duration: '10'
+          duration: '15'
         },
         inputs: ['0:a', '1:a'],
         outputs: outputFile
@@ -66,7 +66,7 @@ const crossfade = (
     })
     .on('end', function() {
       if (nextTrack <= tracks.length - 1) {
-        console.log(`Finished transition ${nextTrack - 1}`);
+        console.log(`${(nextTrack / tracks.length) * 100}% completed`);
         crossfade(
           tracks,
           outputFile,
@@ -74,10 +74,12 @@ const crossfade = (
           0,
           `uploads/${finalDir}/temp/output-${nextTrack}.mp3`,
           nextTrack + 1,
-          finalDir
+          finalDir,
+          res
         );
       } else {
         console.log(`done! output file: ${outputFile}`);
+        res.json({ status: 'finished' });
         deleteTempFiles(finalDir);
         return;
       }
@@ -87,7 +89,7 @@ const crossfade = (
   } catch (e) {}
 };
 
-const mix = (tracks, finalDir) => {
+const mix = (tracks, finalDir, res) => {
   makeTempDirectory(finalDir);
 
   crossfade(
@@ -97,7 +99,8 @@ const mix = (tracks, finalDir) => {
     0,
     `uploads/${finalDir}/temp/output-1.mp3`,
     2,
-    finalDir
+    finalDir,
+    res
   );
 };
 
