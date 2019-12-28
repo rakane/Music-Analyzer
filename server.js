@@ -62,10 +62,6 @@ const storeFS = (stream, filename) => {
   );
 };
 
-function highest() {
-  return [].slice.call(arguments).sort(compareTempo);
-}
-
 app.get('/', (req, res) => {
   res.cookie('playlist_id', generateID());
   res.render('index.pug', {});

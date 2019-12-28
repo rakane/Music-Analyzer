@@ -1,16 +1,25 @@
 const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
+const fsExtra = require('fs-extra');
 const path = require('path');
 
 const deleteTempFiles = playlistID => {
-  const directory = `uploads/${playlistID}/temp`;
+  const tempDir = `uploads/${playlistID}/temp`;
+  const playlistDir = `uploads/${playlistID}`;
 
-  fs.readdir(directory, (err, files) => {
-    if (err) throw err;
-
-    for (const file of files) {
-      fs.unlink(path.join(directory, file), err => {
+  fsExtra.remove(tempDir, err => {
+    console.error(err);
+    if (err === null) {
+      fs.readdir(playlistDir, (err, files) => {
         if (err) throw err;
+
+        for (const file of files) {
+          if (file != 'outputFinal.mp3') {
+            fs.unlink(path.join(playlistDir, file), err => {
+              if (err) throw err;
+            });
+          }
+        }
       });
     }
   });
@@ -54,10 +63,6 @@ const crossfade = (
   )
     .on('error', function(err) {
       console.log('An error occurred: ' + err);
-    })
-    .on('progress', function(progress) {
-      // console.log(JSON.stringify(progress));
-      console.log('Processing: ' + progress.targetSize + ' KB converted');
     })
     .on('end', function() {
       if (nextTrack <= tracks.length - 1) {
