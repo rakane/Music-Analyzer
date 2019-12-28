@@ -9,9 +9,9 @@ h1 Your song BPM
 #playlist-container 
     for result in results
         .song
-            .container
+            .container-name
                 h2=`${result.name}`
-            .container
+            .container-bpm
                 h3=`${result.tempo} BPM`
 
     button(id="mix-btn" type="button") Generate Mix

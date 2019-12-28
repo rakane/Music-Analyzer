@@ -1,6 +1,16 @@
 const ready = () => {
   let songs = tracks;
 
+  let displayedSongs = document.getElementsByClassName('song');
+  for (let i = 0; i < displayedSongs.length; i++) {
+    if (i === displayedSongs.length - 1) {
+      displayedSongs[i].style.borderTop = '2px solid black';
+      displayedSongs[i].style.borderBottom = '2px solid black';
+    } else {
+      displayedSongs[i].style.borderTop = '2px solid black';
+    }
+  }
+
   document.getElementById('mix-btn').addEventListener('click', function(e) {
     e.preventDefault();
     let cookie = document.cookie.split('=');

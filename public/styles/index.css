@@ -21,6 +21,30 @@ h3 {
   width: 100vw;
 }
 
+.file-btn {
+  font-size: 20px;
+  padding: 4px;
+  margin: 16px;
+  outline: none;
+  background: white;
+  color: black;
+  border: 1px solid black;
+}
+
+.submit-btn {
+  font-size: 20px;
+  padding: 8px;
+  outline: none;
+  background: white;
+  color: black;
+  border: 1px solid black;
+}
+
+.submit-btn:hover {
+  background: black;
+  color: white;
+}
+
 #loader-container {
   display: flex;
   flex-direction: row;

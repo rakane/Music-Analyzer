@@ -3,31 +3,59 @@ h1 {
 }
 
 h2 {
-  font-size: 20px;
+  font-size: 14px;
+  text-align: left;
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 14px;
 }
 
 #playlist-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  width: 40vw;
+  margin: auto;
 }
 
 .song {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-}
-
-.container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+.container-name {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 30vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.container-bpm {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 10vw;
+}
+
+#mix-btn {
+  margin: 64px;
+  outline: none;
+  border: 1px solid black;
+  background: white;
+  color: black;
+  font-size: 24px;
+}
+
+#mix-btn:hover {
+  color: white;
+  background: black;
 }
